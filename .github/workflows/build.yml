@@ -28,7 +28,7 @@ jobs:
 
       - name: Verify and package
         run: |
-          lipo build/XGlyph.app/Contents/MacOS/XGlyph -verify_arch arm64 x86_64
+          lipo -archs build/XGlyph.app/Contents/MacOS/XGlyph | python3 -c 'import sys; assert {"arm64", "x86_64"} <= set(sys.stdin.read().split())'
           codesign --verify --strict build/XGlyph.app
           mkdir -p build/dist
           ditto -c -k --keepParent build/XGlyph.app build/dist/XGlyph-universal.zip
